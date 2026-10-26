@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Matvey & Anya — Our Story</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Italiana&family=JetBrains+Mono:wght@300;400;500&family=Montserrat:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <!-- THREAD SCROLLBAR -->
+  <div class="scroll-thread" id="scroll-thread"></div>
+
+  <!-- AUTHENTICATION (PIN 2411) -->
+  <div id="auth-overlay" class="auth-overlay">
+    <div class="auth-card">
+      <div class="museum-tag">MATVEY & ANNA · ГРЫЗТЬ КАКАШКИ</div>
+      <h2>НАША МАЛЕНЬКАЯ ВСЕЛЕННАЯ</h2>
+      <p>Введи пароль для входа</p>
+      
+      <div class="pin-display" id="pin-display" aria-label="Введённые цифры">
+        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+      </div>
+      <p class="melody-hint" id="melody-hint">Коснись цифр и услышь наш код: <span>X - X - X - X</span></p>
+      <p class="melody-status" id="melody-status" aria-live="polite">Машалла</p>
+
+      <div class="keypad">
+        <button class="key-btn magnetic-hover" data-key="1">1</button>
+        <button class="key-btn magnetic-hover" data-key="2">2</button>
+        <button class="key-btn magnetic-hover" data-key="3">3</button>
+        <button class="key-btn magnetic-hover" data-key="4">4</button>
+        <button class="key-btn magnetic-hover" data-key="5">5</button>
+        <button class="key-btn magnetic-hover" data-key="6">6</button>
+        <button class="key-btn magnetic-hover" data-key="7">7</button>
+        <button class="key-btn magnetic-hover" data-key="8">8</button>
+        <button class="key-btn magnetic-hover" data-key="9">9</button>
+        <button class="key-btn action magnetic-hover" data-key="del">⌫</button>
+        <button class="key-btn magnetic-hover" data-key="0">0</button>
+        <button class="key-btn action magnetic-hover" id="btn-enter-pin">✓</button>
+      </div>
+      <p class="pin-error" id="pin-error">Кажется, это не наш код. Попробуй ещё раз.</p>
+    </div>
+  </div>
+
+  <!-- FLOATING WALTZ NOTIFICATION TOAST -->
+  <div id="waltz-toast" class="waltz-toast hidden">
+    <div class="toast-glow"></div>
+    <span class="toast-icon" aria-hidden="true"><i data-lucide="mail-open"></i></span>
+    <div class="toast-content">
+      <strong>У тебя есть письмо ♡</strong>
+      <p>Матвей приготовил для тебя кое-что особенное.</p>
+    </div>
+    <button id="btn-open-quest" class="magnetic-hover">Открыть</button>
+  </div>
+
+
+  
+
+  <!-- MAIN EDITORIAL CANVAS -->
+  <main class="editorial-canvas">
+
+    <!-- 01. COVER SECTION -->
+    <header class="editorial-piece cover-piece">
+      <div class="meta-line"><span>НАША ИСТОРИЯ</span><span>С 22.10.2025 ~ СЕГОДНЯ</span></div>
+      <p class="eyebrow">A LITTLE WORLD THAT BELONGS TO US</p><h1 class="giant-heading spring-tracking">MATVEY <span class="ampersand">&</span> ANNA<span class="sub-overlap">1 year anniversary</span></h1>
+      
+      <div class="hero-photo-frame asymmetric-tilt-1">
+        <img src="assets/photos/chain_37.jpg" class="hero-img" alt="Cover" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800';">
+        <div class="marker-circle">КАКИЕ МЫ МИЛЫЕ</div>
+        <div class="punch-hole"></div>
+      </div>
+
+      <div class="ticket-box perforated-edge">
+        <div class="ticket-header">МЫ ВМЕСТЕ УЖЕ</div>
+        <div class="timer-grid">
+          <div><span id="t-years">0</span><label>ГОД</label></div>
+          <div><span id="t-days">000</span><label>ДНЕЙ</label></div>
+          <div><span id="t-hours">00</span><label>ЧАСОВ</label></div>
+          <div><span id="t-min">00</span><label>МИНУТ</label></div>
+          <div><span id="t-sec">00</span><label>СЕКУНД</label></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 02. FREQUENCY TUNER (АНАЛОГОВЫЙ РАДИОПРИЕМНИК ВРЕМЕНИ) -->
+    <section class="editorial-piece fade-item">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">МАЛЕНЬКИЙ ПЕРЕХОД В ПРОШЛОЕ</span>
+        <h2 class="section-title">Помнишь это?</h2>
+        <p class="section-desc-sub">Прокрути время и поймай одно из наших воспоминаний.</p>
+      </div>
+      <div class="tuner-box">
+        <div class="tuner-display">
+          <span id="freq-number">24.11</span><span>MHz</span>
+        </div>
+        <input type="range" id="freq-slider" min="22" max="24.11" step="0.01" value="22" class="tuner-range">
+        <p class="tuner-quote" id="tuner-quote">«22.10.2025 - начало отноешний жиесть»</p>
+      </div>
+    </section>
+
+    <!-- 03. VINYL & TONEARM -->
+    <section class="editorial-piece vinyl-piece" id="vinyl-section">
+      <div class="torn-paper-wrapper">
+        <div class="vinyl-layout">
+          <div class="vinyl-info-left fade-item">
+            <span class="mono-subtitle">Твоя любимая (вроде) песня</span>
+            <h2 class="section-title">Песня, которая у меня в плейлисте из-за тебя</h2>
+            <p class="song-title">«Секс по-питерски»</p>
+            <p class="song-artist">КлоуКома</p>
+            <p class="song-desc">Включи её и устраивайся поудобнее</p>
+            
+            <button class="btn-editorial-play magnetic-hover" id="btn-vinyl">
+              <span class="btn-icon" id="vinyl-icon" aria-hidden="true"><i data-lucide="play"></i></span>
+              <span id="vinyl-btn-text">Запустить</span>
+            </button>
+          </div>
+
+          <div class="vinyl-stage-right" id="vinyl-slide-in">
+            <div class="vinyl-disc-wrap">
+              <img src="assets/photos/vinyl.png" alt="Vinyl" class="png-vinyl" id="vinyl-disc" onerror="this.src='https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?q=80&w=600';">
+            </div>
+            <div class="needle-wrap" id="tonearm">
+              <img src="assets/photos/needle.png" alt="Needle" class="png-needle" onerror="this.style.display='none';">
+            </div>
+            <div class="vinyl-audio-track" id="vinyl-audio-track">
+              <div class="vinyl-track-heading"><span>/\/\</span><span id="vinyl-audio-time">0:00 / 0:00</span></div>
+              <div class="vinyl-waveform" id="vinyl-waveform" role="slider" tabindex="0" aria-label="Перемотка аудиодорожки" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04. DYNAMIC CHAOS BOARD -->
+    <section class="editorial-piece fade-item">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">РОССИЯ. ПУТИН. ПОБЕДА.</span>
+        <h2 class="section-title">Любимые моменты жизни</h2>
+        <p class="section-desc-sub">Почти все моменты из наших отношений, которые я нашел в галерее</p>
+        <button class="btn-editorial-sm magnetic-hover" id="btn-shuffle-collage" style="margin-top: 15px;">Перетасовать  ↗</button>
+      </div>
+      <div class="chaos-board" id="chaos-board"></div>
+    </section>
+
+    <!-- 05. 35MM FILM STRIP -->
+    <section class="editorial-piece fade-item">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">ВОТ ТУТ УЖЕ ВСЕ НАЙДЕНЫЕ ФОТКИ</span>
+        <h2 class="section-title">Если бы наша история была фильмом</h2>
+      </div>
+      <div class="film-strip-container">
+        <div class="film-strip" id="film-strip-wrap"></div>
+      </div>
+    </section>
+
+    <!-- 06. POLAROID DEVELOPING LAB -->
+    <section class="editorial-piece fade-item">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">К ВАМ ЛЕТИТ РАКЕТА</span>
+        <h2 class="section-title">Немного магии</h2>
+        <p class="section-desc-sub">Прояви снимок, который хранит глубокий смысл бытия</p>
+      </div>
+      <div class="polaroid-lab-card" id="polaroid-lab">
+        <div class="polaroid-photo-frame">
+          <img src="assets/photos/синяк.jpg" alt="Secret Memory" id="polaroid-img" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600';">
+          <div class="polaroid-developer-layer" id="developer-layer">ПРОЯВИТЬ СНИМОК</div>
+        </div>
+        <div class="polaroid-caption">Anna & Matvey // 22.10</div>
+      </div>
+    </section>
+
+    <!-- 07. WAXY LETTER WITH INK REVEAL -->
+    <section class="editorial-piece fade-item">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">НЕ ВСЁ УМЕЩАЕТСЯ В СООБЩЕНИЯХ</span>
+        <h2 class="section-title">Письмо для тебя</h2>
+      </div>
+      <div class="envelope-container" id="envelope-box">
+        <div class="wax-seal-badge magnetic-hover" id="wax-badge">A&M</div>
+        <div class="vellum-paper" id="vellum-paper">
+          <div class="handwritten-box">
+            <svg class="handwritten-svg" viewBox="0 0 300 80">
+              <path id="ink-path" d="M 10 40 Q 80 10, 150 40 T 290 40" fill="transparent" stroke="#C5A059" stroke-width="2"/>
+            </svg>
+            <p class="letter-main" id="letter-text">Нажмите на печать, чтобы сломать оттиск и прочесть строки чернилами...</p>
+          </div>
+          <button class="btn-editorial-sm magnetic-hover" id="btn-next-reason">Следующая искра</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08. TELEGRAM EXHIBIT -->
+    <section class="editorial-piece fade-item">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">ИЗ ТЕЛЕГИ</span>
+        <h2 class="section-title">Архивные записи</h2>
+      </div>
+      <div class="tg-chat-container">
+        <div class="tg-chat-header"><span>Главное из Telegram</span></div>
+        <div class="chat-scrapbook" id="chat-box"></div>
+      </div>
+    </section>
+
+    <!-- RELATIONSHIP TIMELINE -->
+    <section class="editorial-piece fade-item relationship-section" id="our-timeline">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">С ТОГО САМОГО ДНЯ</span>
+        <h2 class="section-title">Наша история — не по датам, а по ощущениям</h2>
+        <p class="section-desc-sub">У каждой главы свой цвет, свой звук и своё «Помнишь?».</p>
+      </div>
+      <div class="story-timeline">
+        <article class="story-moment"><span class="story-date">22.10.2025</span><span class="story-dot"></span><div><h3>Началось с нас</h3><p>Обычный день, который изменил мою жизнь на ближайший год</p></div></article>
+        <article class="story-moment"><span class="story-date">ПОТОМ</span><span class="story-dot"></span><div><h3>Наши места и шутки</h3><p>Появились свои фразы и моменты, которые не объяснишь никому другому (невьетнам)</p></div></article>
+        <article class="story-moment"><span class="story-date">СЕЙЧАС</span><span class="story-dot"></span><div><h3>Всё ещё выбираю тебя</h3><p>Не потому что красиво звучит. А потому что мне нравится жить, осознавая, что рядом - ты</p></div></article>
+      </div>
+    </section>
+
+    <!-- LITTLE THINGS -->
+    <section class="editorial-piece fade-item relationship-section" id="little-things">
+      <div class="section-heading-box">
+        <span class="mono-subtitle">САМОЕ ЦЕННОЕ В МЕЛОЧАХ</span>
+        <h2 class="section-title">То, что делает нас нами</h2>
+      </div>
+      <div class="little-things-grid">
+        <article class="little-thing"><span>УЮТ</span><h3>Когда рядом спокойно</h3><p>Когда чтобы быть любимым и счастливым, не нужно изображать хорошее настроение</p></article>
+        <article class="little-thing"><span>ЮМОР</span><h3>Мои странные шутки</h3><p>Те самые, над которыми мы смеёмся дольше, чем они того заслуживают</p></article>
+        <article class="little-thing"><span>БУДУЩЕЕ</span><h3>Ещё столько всего</h3><p>Новые города, спонтанные планы. Но я уверен, что вдвоём мы справимся</p></article>
+      </div>
+    </section>
+
+    <!-- A SMALL SURPRISE -->
+    <section class="editorial-piece fade-item love-note-section" id="little-surprise">
+      <span class="mono-subtitle">Я ОСТАВИЛ ЭТО НАПОСЛЕДОК</span>
+      <h2 class="section-title">И всё-таки… ещё одна вещь</h2>
+      <p class="section-desc-sub">Есть слова, которые хочется сказать напоследок</p>
+      <button class="btn-gold-lg magnetic-hover" id="surprise-open" type="button" aria-expanded="false">Развернуть записку <i data-lucide="mail-open" aria-hidden="true"></i></button>
+      <div class="surprise-note" id="surprise-note" hidden>
+        <span class="surprise-sparkle">✧</span>
+        <p>Я тебе обещаю. Ты проснёшься рано утром, я буду рядом. Ты сядешь ужинать, я буду рядом. День рождения: я буду рядом)))). Каждое рождество, я буду рядом. Год за годом, год за годом, мы состаримся вместе))))</p>
+        <strong>(с) Босс Молокосос</strong>
+      </div>
+    </section>
+
+    <section class="editorial-piece fade-item credits-section" id="final-credits">
+      <div class="finale-starfield" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="finale-content">
+        <span class="mono-subtitle">ИСТОРИЯ ПРОДОЛЖАЕТСЯ</span>
+        <h2 class="section-title">Это только начало.</h2>
+        <p class="final-note">Матвей & Аня · 22.10.2025 — ∞</p>
+        <div class="finale-whisper" id="finale-whisper" aria-live="polite">
+          <i data-lucide="heart" aria-hidden="true"></i>
+          <p>В любой версии будущего<br>я всё равно выбираю тебя.</p>
+          <span>— Матвей</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="metadata-backdrop" id="metadata-backdrop" hidden></div>
+
+  </main>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html
